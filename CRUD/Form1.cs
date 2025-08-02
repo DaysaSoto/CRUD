@@ -30,7 +30,14 @@ namespace CRUD
 
         private void dgvUsuario_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex >= 0) // Asegurarse que no sea cabecera
+            {
+                DataGridViewRow fila = dgvUsuario.Rows[e.RowIndex];
 
+                textNombre.Text = fila.Cells["Nombre"].Value.ToString();
+                textCorreo.Text = fila.Cells["Correo"].Value.ToString();
+                textTelefono.Text = fila.Cells["Telefono"].Value.ToString();
+            }
         }
     }
 }
