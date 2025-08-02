@@ -39,5 +39,26 @@ namespace CRUD
                 textTelefono.Text = fila.Cells["Telefono"].Value.ToString();
             }
         }
+
+        private void btnAgregar_Click(object sender, EventArgs e)
+        {
+            if (textNombre.Text != "" && textCorreo.Text != "" && textTelefono.Text != "")
+            {
+                using (SqlConnection con = new SqlConnection(conexion))
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand("INSERT INTO Usuarios (Nombre, Correo, Telefono) VALUES (@n, @c, @t)", con);
+                    cmd.Parameters.AddWithValue("@n", textNombre.Text);
+                    cmd.Parameters.AddWithValue("@c", textCorreo.Text);
+                    cmd.Parameters.AddWithValue("@t", textTelefono.Text);
+                    cmd.ExecuteNonQuery();
+                }
+               
+            }
+            else
+            {
+                MessageBox.Show("Todos los campos son obligatorios");
+            }
+        }
     }
 }
