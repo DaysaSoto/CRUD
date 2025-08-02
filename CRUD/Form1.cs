@@ -58,6 +58,7 @@ namespace CRUD
                     cmd.Parameters.AddWithValue("@c", textCorreo.Text);
                     cmd.Parameters.AddWithValue("@t", textTelefono.Text);
                     cmd.Parameters.AddWithValue("@id", id);
+
                     cmd.ExecuteNonQuery();
                 }
                 
