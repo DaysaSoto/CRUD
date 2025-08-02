@@ -9,23 +9,21 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 
-
 namespace CRUD
 {
     public partial class Form1 : Form
     {
         string conexion = "Server=localhost\\SQLEXPRESS;Database=CRUD_Usuarios;Trusted_Connection=True;";
+
         public Form1()
         {
-           
-
             InitializeComponent();
         }
 
-
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+            // Aquí puedes cargar datos si quieres
+            // CargarDatos();
         }
 
         private void dgvUsuario_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -40,6 +38,7 @@ namespace CRUD
             }
         }
 
+
         private void btnAgregar_Click(object sender, EventArgs e)
         {
             if (textNombre.Text != "" && textCorreo.Text != "" && textTelefono.Text != "")
@@ -53,12 +52,49 @@ namespace CRUD
                     cmd.Parameters.AddWithValue("@t", textTelefono.Text);
                     cmd.ExecuteNonQuery();
                 }
-               
+
+                MessageBox.Show("Usuario agregado correctamente");
+                // CargarDatos(); // Si tienes función para recargar datos
+                LimpiarCampos();
             }
             else
             {
                 MessageBox.Show("Todos los campos son obligatorios");
             }
         }
+
+        private void btnEditar_Click(object sender, EventArgs e)
+        {
+            if (dgvUsuario.SelectedRows.Count > 0)
+            {
+                int id = Convert.ToInt32(dgvUsuario.SelectedRows[0].Cells["Id"].Value);
+                using (SqlConnection con = new SqlConnection(conexion))
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand("UPDATE Usuarios SET Nombre=@n, Correo=@c, Telefono=@t WHERE Id=@id", con);
+                    cmd.Parameters.AddWithValue("@n", textNombre.Text);
+                    cmd.Parameters.AddWithValue("@c", textCorreo.Text);
+                    cmd.Parameters.AddWithValue("@t", textTelefono.Text);
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.ExecuteNonQuery();
+                }
+
+                MessageBox.Show("Usuario editado correctamente");
+                // CargarDatos(); // Si tienes función para recargar datos
+                LimpiarCampos();
+            }
+            else
+            {
+                MessageBox.Show("Selecciona un usuario para editar");
+            }
+        }
+
+        private void LimpiarCampos()
+        {
+            textNombre.Clear();
+            textCorreo.Clear();
+            textTelefono.Clear();
+        }
     }
 }
+
